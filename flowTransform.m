@@ -21,7 +21,7 @@ else
     numOfPars = numel(parameters);
 
     T = 2^18;
-    M = 5;
+    M = 4.5;
     A = 0;
     
     % Auto width parameters

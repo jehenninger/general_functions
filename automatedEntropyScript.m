@@ -28,7 +28,7 @@ multiWaitbar('CloseAll');
 
 gini = [giniCoeff{:}]';
 
-recombination = myNorm(recomb,100,0);
+recombination = normalize_var(recomb,0,1);
 
 modGini = gini.*recombination;
 

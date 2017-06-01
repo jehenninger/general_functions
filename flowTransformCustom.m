@@ -17,13 +17,13 @@ else
     numOfPars = numel(parameters);
     
 
-    redIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*PE|(?=Comp).*Red)')));
-    greenIdx = find(~cellfun(@isempty,regexp(parameters,'(?=Comp).*FITC')));
-    blueIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*CFP|(?=Comp).*DAPI)')));
-    idx = [redIdx,greenIdx,blueIdx];
+    rIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*PE|(?=Comp).*Red)')));
+    gIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*FITC|(?=Comp).*GFP)')));
+    bIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*CFP|(?=Comp).*DAPI)')));
+    idx = [rIdx,gIdx,bIdx];
     
     T = 2^18;
-    M = 5;
+    M = 4.5;
     A = 0;
     
     % Auto width parameters
@@ -31,20 +31,21 @@ else
     for kk = 1:numOfPars
         
         w(kk) = (M - log10(T/abs(min(data(:,kk)))))/2;
+        
         if w(kk) < 0
             w(kk) = 0;
         end
         
-        if kk == redIdx
-            w(kk) = 1.25;
-        end
-        
-        if kk == greenIdx
+        if kk == rIdx
             w(kk) = 1.5;
         end
         
-        if kk == blueIdx
-            w(kk) = 1.5;
+        if kk == gIdx
+            w(kk) = 1.75;
+        end
+        
+        if kk == bIdx
+            w(kk) = 1.75;
         end
     end
     
