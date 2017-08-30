@@ -1,4 +1,4 @@
-function [transformData,parameters,sampleName] = flowTransform(file)
+function [transformData,parameters,sampleName] = flowTransform(file,redW,greenW,blueW)
 %flowTransform will take a fcs file and do the logicle transform
 %   file is the full path of the .fcs file to transform
 %   TO ADD: type is the type of transform ('default' or 'custom'). Custom requires

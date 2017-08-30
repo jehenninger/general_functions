@@ -1,10 +1,22 @@
-function [transformData,parameters,sampleName,idx] = flowTransformCustom(file)
+function [transformData,parameters,sampleName,idx, wOutput] = flowTransformCustom(file,redW,greenW,blueW)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
 if ~exist('file','var') || isempty(file)
     [file,path] = uigetfile('E:\zon_lab\FACS\*.fcs');
     file = fullfile(path,file);
+end
+
+if ~exist('redW','var') || isempty(redW)
+    redW = 1.5;
+end
+
+if ~exist('greenW','var')|| isempty(greenW)
+    greenW = 1.75;
+end
+
+if ~exist('blueW','var') || isempty(blueW)
+    blueW = 1.75;
 end
 
 [~,sampleName,~] = fileparts(file);
@@ -16,7 +28,7 @@ else
     parameters = {header.par.name};
     numOfPars = numel(parameters);
     
-
+    
     rIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*PE|(?=Comp).*Red)')));
     gIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*FITC|(?=Comp).*GFP)')));
     bIdx = find(~cellfun(@isempty,regexp(parameters,'((?=Comp).*CFP|(?=Comp).*DAPI)')));
@@ -37,17 +49,29 @@ else
         end
         
         if kk == rIdx
-            w(kk) = 1.5;
+            if redW ~= 'auto'
+                w(kk) = redW;
+            end
         end
         
         if kk == gIdx
-            w(kk) = 1.75;
+            if greenW ~= 'auto'
+                w(kk) = greenW;
+            end
         end
         
         if kk == bIdx
-            w(kk) = 1.75;
+            if blueW ~= 'auto'
+                w(kk) = blueW;
+            end
         end
     end
+    
+    redWOutput = w(rIdx);
+    greenWOutput = w(gIdx);
+    blueWOutput = w(bIdx);
+    
+    wOutput = [redWOutput, greenWOutput, blueWOutput];
     
     transformData = zeros(size(data));
     for ii = 1:numOfPars
