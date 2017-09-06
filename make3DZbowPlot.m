@@ -1,4 +1,4 @@
-function [h, wOutput,file] = make3DZbowPlot(fileInput,sampleSize, markerSize, alpha,w)
+function [hFig,hPlot, wOutput,file] = make3DZbowPlot(fileInput,sampleSize, markerSize, alpha, w, visible)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -37,13 +37,12 @@ cellColor = cellColor(:,idx);
 cellColor = normalize_var(cellColor,0,1);
 
 if sampleSize < size(data,1)
-    [sample, sampleIdx] = datasample(cellColor,sampleSize,'Replace', false);
+    [~, sampleIdx] = datasample(cellColor,sampleSize,'Replace', false);
     cellColorSample = cellColor(sampleIdx,:);
     x = data(sampleIdx, idx(1));
     y = data(sampleIdx, idx(2));
     z = data(sampleIdx, idx(3));
 else
-    sample = cellColor;
     cellColorSample = cellColor;
     x = data(:,idx(1));
     y = data(:,idx(2));
@@ -65,12 +64,19 @@ end
 
 %     f = figure('Units','normalized','Position',[0.5 0 0.5 1]);
 %     h{kk} = scatter3(x,y,z, markerSize,normalize_var(cellColorSample,0,1),'filled','MarkerFaceAlpha',1,'MarkerEdgeAlpha',1);
-h = scatter3(x, y, z, markerSize, cellColorSample,'filled','MarkerFaceAlpha',alpha);
-axis('equal');
-view(125,25);
 
-title(sampleName);
-drawnow;
+switch visible
+    case 'on'
+        hFig = figure('Units','normalized','Position',[0.5 0 0.5 1], 'Visible','on');
+    case 'off'
+        hFig = figure('Units','normalized','Position',[0.5 0 0.5 1], 'Visible','off');
+end
+        hPlot = scatter3(x, y, z, markerSize, cellColorSample,'filled','MarkerFaceAlpha',alpha, 'MarkerEdgeAlpha',alpha);
+        axis('equal');
+        view(125,25);
+        
+        title(sampleName);
+        drawnow;
 
 end
 
